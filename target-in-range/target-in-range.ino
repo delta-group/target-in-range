@@ -3,7 +3,7 @@ const int trigPin = 2;
 const int echoPin = 4;
 
 /************************************************************************/
-/*                           Device function definitions                */
+/*                     Device function definitions                      */
 /************************************************************************/
 int getDistance() {
   // establish variables for duration of the ping, 
