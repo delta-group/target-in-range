@@ -41,6 +41,8 @@ int getDistance() {
 
   // poll the sensor 10 times a second
   delay(100);
+
+  return cm;
 }
 
 /************************************************************************/
@@ -56,5 +58,6 @@ void setup() {
 /************************************************************************/
 void loop()
 {
-
+  // measure distance in cm
+  int distance = getDistance();
 }
