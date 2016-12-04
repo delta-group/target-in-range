@@ -3,16 +3,19 @@
 /************************************************************************/
 
 // Sonar Pins
-const int trigPin = 2;
-const int echoPin = 4;
+const int trigPin   = 2;
+const int echoPin   = 4;
 
 // LED Pins
-const int redPin = 11;
-const int greenPin = 12;
-const int bluePin = 13;
+const int redPin    = 11;
+const int greenPin  = 12;
+const int bluePin   = 13;
 
 // Buzzer
-const int buzzPin = 9;
+const int buzzPin   = 9;
+
+// Button
+const int buttonPin = 5;
 
 /************************************************************************/
 /*                     Device function definitions                      */
@@ -54,10 +57,21 @@ int getDistance() {
 
 // Buzzer
 void buzzEnable(void) {
-  tone(buzzPin, 1000);
+  // read the current state of the button (1 if pressed, 0 if not)
+  int buttonPressed = digitalRead(buttonPin);
+
+  if (buttonPressed) {
+    // only buzz the buzzer if button pressed
+    tone(buzzPin, 1000);  
+  }
+  else {
+    // otherwise turn it off
+    noTone(buzzPin);
+  }
 }
 
 void buzzDisable(void) {
+  // turn off the buzzer (called when target is out of range)
   noTone(buzzPin);
 }
 
@@ -117,6 +131,9 @@ void setup() {
 
   // setup Buzzer pin for output
   pinMode(buzzPin, OUTPUT);
+
+  // setup Button pin for input
+  pinMode(buttonPin, INPUT);
 }
 
 /************************************************************************/
