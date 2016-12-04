@@ -14,9 +14,6 @@ const int bluePin   = 13;
 // Buzzer
 const int buzzPin   = 9;
 
-// Button
-const int buttonPin = 5;
-
 /************************************************************************/
 /*                     Device function definitions                      */
 /************************************************************************/
@@ -57,22 +54,7 @@ int getDistance() {
 
 // Buzzer
 void buzzEnable(void) {
-  // read the current state of the button (1 if pressed, 0 if not)
-  int buttonPressed = digitalRead(buttonPin);
-  delay(8);
-  if (digitalRead(buttonPin) != buttonPressed) {
-    buttonPressed = 0;
-  }
-  
-  if (buttonPressed == 1) {
-    // only buzz the buzzer if button pressed
-    tone(buzzPin, 1000);  
-  }
-  else {
-    // otherwise turn it off
-    noTone(buzzPin);
-  }
-  
+  tone(buzzPin,1000);
 }
 
 void buzzDisable(void) {
@@ -136,9 +118,6 @@ void setup() {
 
   // setup Buzzer pin for output
   pinMode(buzzPin, OUTPUT);
-
-  // setup Button pin for input
-  pinMode(buttonPin, INPUT);
 }
 
 /************************************************************************/
