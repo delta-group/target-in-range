@@ -6,13 +6,18 @@
 const int trigPin = 2;
 const int echoPin = 4;
 
+// LED Pins
+const int redPin=11;
+const int greenPin=12;
+const int bluePin=13;
+
 /************************************************************************/
 /*                     Device function definitions                      */
 /************************************************************************/
 int getDistance() {
   // establish variables for duration of the ping, 
   // and the distance result in centimeters:
-  long duration, cm;
+  long duration, centimeters;
 
   // The sensor is triggered by a HIGH pulse of 10 or more microseconds.
   // Give a short LOW pulse beforehand to ensure a clean HIGH pulse:
@@ -32,17 +37,52 @@ int getDistance() {
   // The speed of sound is 340 m/s or 29 microseconds per centimeter.
   // The ping travels out and back, so to find the distance of the
   // object we take half of the distance travelled.
-  cm = duration / 29 / 2;
+  centimeters = duration / 29 / 2;
 
   // display distance on Serial Monitor (when hooked up to a computer)
-  Serial.print(cm);
+  Serial.print(centimeters);
   Serial.print("cm");
   Serial.println();
 
-  // poll the sensor 10 times a second
-  delay(100);
+  return centimeters;
+}
 
-  return cm;
+int LEDColor(int distance) {
+  if (distance >= 200) {
+    // RED is represented by 2
+    return 2;           
+  }
+  else if (distance >= 130) {
+    // YELLOW is represented by 1
+    return 1;
+  }
+  else {
+    // GREEN is represented by 0
+    return 0;
+  }
+}
+
+void turnOnLED(int color) {
+  switch(color){
+    case 0: 
+      // GREEN
+      digitalWrite(redPin, LOW);   
+      digitalWrite(bluePin, LOW);
+      digitalWrite(greenPin, HIGH);
+      break;
+    case 1: 
+      // YELLOW
+      digitalWrite(redPin, HIGH);  
+      digitalWrite(bluePin, LOW);
+      digitalWrite(greenPin, HIGH);
+      break;
+    case 2: 
+      // RED
+      digitalWrite(redPin, HIGH);
+      digitalWrite(bluePin, LOW);
+      digitalWrite(greenPin, LOW);
+      break;
+  }
 }
 
 /************************************************************************/
@@ -51,6 +91,11 @@ int getDistance() {
 void setup() {
   // initialize serial communication:
   Serial.begin(9600);
+
+  // setup LED pins for output
+  pinMode(redPin, OUTPUT);
+  pinMode(bluePin, OUTPUT);
+  pinMode(greenPin, OUTPUT);
 }
 
 /************************************************************************/
@@ -60,4 +105,9 @@ void loop()
 {
   // measure distance in cm
   int distance = getDistance();
+  int color = LEDColor(distance);
+  turnOnLED(color);
+  
+  // poll the sensor 10 times a second
+  delay(250);
 }
