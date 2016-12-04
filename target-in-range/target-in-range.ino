@@ -7,13 +7,18 @@ const int trigPin = 2;
 const int echoPin = 4;
 
 // LED Pins
-const int redPin=11;
-const int greenPin=12;
-const int bluePin=13;
+const int redPin = 11;
+const int greenPin = 12;
+const int bluePin = 13;
+
+// Buzzer
+const int buzzPin = 9;
 
 /************************************************************************/
 /*                     Device function definitions                      */
 /************************************************************************/
+
+// Sonar 
 int getDistance() {
   // establish variables for duration of the ping, 
   // and the distance result in centimeters:
@@ -47,6 +52,16 @@ int getDistance() {
   return centimeters;
 }
 
+// Buzzer
+void buzzEnable(void) {
+  tone(buzzPin, 1000);
+}
+
+void buzzDisable(void) {
+  noTone(buzzPin);
+}
+
+// LED
 int LEDColor(int distance) {
   if (distance >= 200) {
     // RED is represented by 2
@@ -69,18 +84,21 @@ void turnOnLED(int color) {
       digitalWrite(redPin, LOW);   
       digitalWrite(bluePin, LOW);
       digitalWrite(greenPin, HIGH);
+      buzzEnable();
       break;
     case 1: 
       // YELLOW
       digitalWrite(redPin, HIGH);  
       digitalWrite(bluePin, LOW);
       digitalWrite(greenPin, HIGH);
+      buzzDisable();
       break;
     case 2: 
       // RED
       digitalWrite(redPin, HIGH);
       digitalWrite(bluePin, LOW);
       digitalWrite(greenPin, LOW);
+      buzzDisable();
       break;
   }
 }
@@ -96,6 +114,9 @@ void setup() {
   pinMode(redPin, OUTPUT);
   pinMode(bluePin, OUTPUT);
   pinMode(greenPin, OUTPUT);
+
+  // setup Buzzer pin for output
+  pinMode(buzzPin, OUTPUT);
 }
 
 /************************************************************************/
@@ -108,6 +129,5 @@ void loop()
   int color = LEDColor(distance);
   turnOnLED(color);
   
-  // poll the sensor 10 times a second
   delay(250);
 }
