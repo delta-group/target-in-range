@@ -59,8 +59,12 @@ int getDistance() {
 void buzzEnable(void) {
   // read the current state of the button (1 if pressed, 0 if not)
   int buttonPressed = digitalRead(buttonPin);
-
-  if (buttonPressed) {
+  delay(8);
+  if (digitalRead(buttonPin) != buttonPressed) {
+    buttonPressed = 0;
+  }
+  
+  if (buttonPressed == 1) {
     // only buzz the buzzer if button pressed
     tone(buzzPin, 1000);  
   }
@@ -68,6 +72,7 @@ void buzzEnable(void) {
     // otherwise turn it off
     noTone(buzzPin);
   }
+  
 }
 
 void buzzDisable(void) {
